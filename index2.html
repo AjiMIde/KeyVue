@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Two project</title>
+	<link rel="stylesheet" href="app/css/index.css">
+	<script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<div class="row">
+			<h5>方法处理器 -- click 事件</h5>
+			{{click_msg}} <button @click="click_btn('i am from ',$event)">click me</button>
+		</div>
+
+		<div class="row">
+			<h5>方法中使用事件修饰轻松实现：event.preventDefault()/event.stopPropagation()，还提供了 .capture（侦听器使用 capture 模式），.self（仅当事件在元素本身触发时回调）</h5>
+			<button @click.stop="">stop</button>
+			<button @click.prevent="">prevent</button>
+			<button @click.capture="">capture</button>
+			<button @click.self="">self</button>
+		</div>
+
+		<div class="row">
+			<h5>按键修饰符，监听键盘事件时，当监听到某个按键时，做出对应的响应，有 keyup.enter/tab/delete/esc/space..详见API</h5>
+			<input type="text" placeholder="当监听到 enter 时弹出 alert 框" @keyup.enter="input_enter">
+		</div>
+
+		<div class="row">
+			<h5 class="red">表单控件绑定 v-model，这里着重一些比较典型的例子：</h5>
+			<h5>checkbox 与数组绑定</h5>
+			<input type="checkbox" value="Very" id="very" v-model="mod_checkbox"><label for="very">Very</label>
+			<input type="checkbox" value="Good" id="good" v-model="mod_checkbox"><label for="good">Good</label>
+			<input type="checkbox" value="Ball" id="ball" v-model="mod_checkbox"><label for="ball">Ball</label>
+			<div>Your values: {{mod_checkbox | json}}</div>
+
+			<h5>radio 选择绑定</h5>
+			<input type="radio" id="one" value="One" v-model="picked"><label for="one">One</label>
+			<input type="radio" id="two" value="Two" v-model="picked"><label for="two">Two</label>
+			<div>Picked: {{ picked }}</div>
+		</div>
+
+		<div class="row">
+			<h5>参数特性：延迟</h5>
+			<input type="text" debounce="500" v-model="input_debounce">{{input_debounce}}
+		</div>
+
+
+	</div>
+</body>
+	<script type="text/javascript" src="app/js/index2.js"></script>
+</html>

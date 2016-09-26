@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Two project</title>
+	<link rel="stylesheet" href="app/css/index.css">
+	<script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<div class="row">
+			<h5>绑定事件：click</h5>
+			{{msg}}
+			<button @click="reverse">reverse msg</button>
+		</div>
+
+		<div class="row">
+			<h5>v-if/v-show 显示/隐藏操作</h5>
+			<div><span v-if='flag_if'>i am a if div;</span><button @click='flag_if = !flag_if'>toggle v-if</button></div>
+			<div><span v-show='flag_show'>i am a show div;</span><button @click='flag_show = !flag_show'>toggle v-show</button></div>
+		</div>
+
+		<div class="row">
+			<h5>v-if/v-else 显示/隐藏操作，v-else 也可以在 v-show 后面使用</h5>
+			<div><span v-if='flag_if'>i am a if div;</span><span v-else>i am a else div</span></div>
+		</div>
+
+		<div class="row">
+			<h5>综合的 todo -mvc 小模型</h5>
+			<input type="text" v-model="mod_todo" @keyup.enter="addTodo">
+			<ul>
+				<li v-for="todo in todos">
+					<span>{{$index}}:</span>
+					<span>{{todo.text}}</span>
+					<button @click="removeTodo($index)">X</button>
+				</li>
+			</ul>
+		</div>
+
+		<div class="row">
+			<h5>监听 model 的变化并响应</h5>
+			<div>the model 'mod_todo_input's length is: {{mod_todo_length}}</div>
+		</div>
+
+		<div class="row">
+			<h5>三目运算符输出 html 样式</h5>
+			<div>{{yunsuan2}}</div>
+			<div>{{{yunsuan3}}}</div>
+		</div>
+
+		<div class="row">
+			<h5>vue使用过滤器加工、筛选数据</h5>
+			使用过滤器加工第一行的 click 事件中的model，使首字母大写：：：	{{msg|capitalize}}
+		</div>
+
+		<div class="row">
+			<h5>使用 vue 参数将Dom元素属性与表达式绑定</h5>
+			<a :href="msg">这个链接的 url 与第一行中的 model 一样</a><br>
+		</div>
+
+		<div class="row">
+			<h5 class="red"> vue 计算属性 computed，一个类似 $watch 的存在，能随时监听 vue 中 data 的值的变化并做返回，计算属性 computed 有get/set 两个方法（默认为get)，在一些数据处理非常好用。</h5>
+			<div>此时计算 'todo-mvc' 中 input :: {{mod_todo_reverse}}</div>
+		</div>
+
+		<div class="row">
+			<h5 class="red">绑定 class 样式，这也是一个比较常用的点</h5>
+			<div><span :class="{'red':flag_red,'bold':flag_bold}">这是一个示例的样式，主要使用boolean 切换</span><button @click="flag_red=!flag_red">add red</button><button @click="flag_bold=!flag_bold">add bold</button></div>
+			<div><span :class="[ flag_red ? 'red' : 'bold' ]">这是一个三元表达式切换</span></div>
+		</div>
+
+	</div>
+</body>
+	<script type="text/javascript" src="app/js/index1.js"></script>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Two project</title>
+	<link rel="stylesheet" href="app/css/index.css">
+	<script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+	<style>
+		.vc-conf-mask{
+			position: fixed;
+			z-index: 9998;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0,0,0,.5);
+			display: table;
+			transition: opacity .5s ease;
+		}
+		.vc-conf-wrapper{
+			display: table-cell;
+			vertical-align: middle;
+		}
+		.vc-conf-container{
+			width: 300px;
+			margin: 0 auto;
+			padding: 20px 30px;
+			background-color: #ffffff;
+			border-radius: 2px;
+			box-shadow: 0 2px 8px rgba(0,0,0,.33);
+			transition:all .3s ease;
+			font-family: Helvetica, Arial, sans-serif;
+		}
+		.vc-conf-header{
+			color:blue;
+		}
+		.vc-conf-warning{
+			color:yellow;
+		}
+		.vc-conf-trans-enter, .vc-conf-trans-leave{
+			opacity: 0;
+		}
+
+		.vc-conf-trans-enter .vc-conf-container,
+		.vc-conf-trans-leave .vc-conf-container{
+			transform: scale(1.1);
+		}
+
+
+	</style>
+	<script>
+		var compA = Vue.extend({
+			template:'<div>private define a component : compA ! <span>{{comA_msg}}</span></div>',
+			props:['compA_msg'],
+			data:function(){
+				return {
+					comA_msg:'i am a msg from comA'
+				}
+			},
+			el:function(){
+				return {}
+			}
+		});
+
+		Vue.component('comp-a',compA);
+
+		Vue.component('comp-b',{
+			template:'<div>private define a component : compB ! (use a simple way)</div>',
+		});
+
+		Vue.component('comp-c',{
+			template:'#comp-c'
+		});
+
+		Vue.component('comp-child',{
+			template:'#comp-child',
+			data:function(){
+				return{
+					msg:'hello'
+				}
+			},
+			methods:{
+				notify:function(){
+					if(this.msg.trim()){
+						this.$dispatch('child-msg',this.msg);
+						this.msg = '';
+					}
+				}
+			}
+		});
+
+		Vue.component('comp-child2',{
+			template:'#comp-child2',
+			props:[
+				'msg',//声明 props 用来传递数据（父子之间）,默认为单向传递，可以用 :msg.sync="vue-model"的方式双向绑定,
+			],
+			props:{
+				propA:Number,
+				propB:[Number,String],
+				propC:{
+					type:String,required:true,default:'vue'
+				},
+				propD:{
+					type:Object,
+					default:function(){
+						return {msg: 'hello'}
+					}
+				},
+				propE:{
+					twoWay:true//指定为双向数据绑定
+				},
+				propF:{
+					validator:function(val){//自定义验证函数
+						return val > 10
+					}
+				},
+				propG:{
+					coerce:function(val){//返回值前处理数据
+						return val + ''
+					}
+				}
+			},
+
+			data:function(){
+				return{
+					propC:10,
+					propA:'1000'
+				}
+			},
+			methods:{
+			},
+		});
+
+		Vue.component('comp-child3',{
+			template:'#comp-child3',
+		});
+
+		Vue.component('comp-child4',{
+			template:'#comp-child4',
+		});
+
+		Vue.component('vc-confirm',{
+			template: '#vc-confirm',
+			props:{
+				show:{type:Boolean,required:true,twoWay:true},
+				vctype:{}
+			},
+			methods:{
+				btn_do_yes:function(){
+					console.log(this.vctype)
+
+				},
+				btn_do_no:function(){
+					this.show=false;
+				}
+			}
+		});
+	</script>
+</head>
+<body>
+	<div id="app">
+		<template id="comp-c">
+			<div>private define a component : compC ! (use a element div)</div>
+		</template>
+
+		<div class="row">
+			<h5 class="red">组件是比较强大的功能，可扩展 HTML 元素，封装可用代码。</h5>
+			<comp-a></comp-a>
+			<comp-b></comp-b>
+			<comp-c></comp-c>
+		</div>
+
+		<div class="row">
+			<h5 class="red">下面是一个父组件与子组件的例子，比较简单但还是比较难懂的。涉及到事件的分发及父子的通讯</h5>
+			<template id="comp-child">
+				<input v-model="msg">
+				<button @click="notify">Dispatch Event</button>
+			</template>
+			<div id="events-example">
+				<p>Messages: {{ messages | json }}</p>
+				<comp-child></comp-child>
+			</div>
+		</div>
+
+		<div class="row">
+			<h5>一个参数配置完整的实例</h5>
+			<template id="comp-child2">
+				<div>{{propA}}</div>
+			</template>
+			<comp-child2 :prop-a='100' prop-c="1000"></comp-child2>
+		</div>
+
+		<div class="row">
+			<h5>单 Slot 分发内容</h5>
+			<template id="comp-child3">
+				<div>Title: 这是一个标题</div>
+				<slot>Body: 这是Body</slot>
+			</template>
+			<comp-child3><div>这是自定义的Body，非默认</div></comp-child3>
+		</div>
+
+		<div class="row">
+			<h5 class="red">具名的 slot ，非常好用，可设置 name 值来匹配输入的 Dom 元素</h5>
+			<template id="comp-child4">
+				<div><slot name="title">Title：这是默认Title</slot></div>
+				<slot name="content">Content：这是默认Content</slot>
+			</template>
+			<comp-child4>
+			</comp-child4>
+			<comp-child4>
+				<div slot='title'>辉常好波</div>
+				<div slot="content">这里是辉常好波网</div>
+			</comp-child4>
+		</div>
+
+		<div class="row">
+			<h5>下面是一个稍大一点的组件实例</h5>
+			<script type="x/template" id="vc-confirm">
+				<div class="vc-conf-mask" v-show="show" transition="vc-conf-trans">
+					<div class="vc-conf-wrapper">
+						<div class="vc-conf-container">
+							<div class="vc-conf-header" :class="{'vc-conf-warning':vctype == '2' }">
+								<slot name="header">Tip</slot>
+							</div>
+							<div class="vc-conf-body">
+								<slot name="body">
+									Ready to do this ??
+								</slot>
+							</div>
+							<div class="vc-conf-footer">
+								<slot name="footer">
+									<button class="vc-conf-btn" @click="btn_do_no">No</button>
+									<button class="vc-conf-btn" @click="btn_do_yes">Yes</button>
+								</slot>
+							</div>
+						</div>
+					</div>
+				</div>
+			</script>
+			<button @click="showVcAlert = true">alert()</button>
+			<button @click="aji">Warning()</button>
+			<button @click="showVcError = true">Warning()</button>
+
+			<vc-confirm :show.sync="showVcAlert"></vc-confirm>
+			<vc-confirm :show.sync="showVcWarning" :vctype.sync="vcConfirm">
+				<div slot="header"><h4>Waring</h4></div>
+				<div slot="body">Warning do you ready to do this ??</div>
+			</vc-confirm>
+			<vc-confirm :show.sync="showVcError">
+				<div slot="header"><h4>Error</h4></div>
+				<div slot="body">It can't be rollback ! do you wanna do it ??</div>
+			</vc-confirm>
+
+		</div>
+
+	</div>
+</body>
+<script type="text/javascript" src="app/js/index.js"></script>
+</html>

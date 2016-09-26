@@ -1,0 +1,15 @@
+h1,h2,h3,h4,h5,h6{
+    margin-bottom: 8px;
+}
+
+.row{
+    margin-bottom: 10px;
+}
+
+.red{
+    color:red;
+}
+
+.bold{
+    font-weight: bold;
+}
