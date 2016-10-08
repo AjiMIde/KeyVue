@@ -67,6 +67,7 @@
 			<h5 class="red">绑定 class 样式，这也是一个比较常用的点</h5>
 			<div><span :class="{'red':flag_red,'bold':flag_bold}">这是一个示例的样式，主要使用boolean 切换</span><button @click="flag_red=!flag_red">add red</button><button @click="flag_bold=!flag_bold">add bold</button></div>
 			<div><span :class="[ flag_red ? 'red' : 'bold' ]">这是一个三元表达式切换</span></div>
+			<div><span :class="[ flag_red ? 'red' : {'bold':flag_bold,'italic':flag_italic} ]">这是一个三元表达式嵌套一个对象生成的样式</span></div>
 		</div>
 
 	</div>

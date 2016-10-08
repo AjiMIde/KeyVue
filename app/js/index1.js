@@ -14,7 +14,8 @@ vue=new Vue({
 		yunsuan3:'<b><u>Yuan Suan3</u></b>',
 
 		flag_red:false,
-		flag_bold:false
+		flag_bold:false,
+		flag_italic:true,
 
 	},
 	methods:{
