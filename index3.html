@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Two project</title>
+	<link rel="stylesheet" href="app/css/index.css">
+	<script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+	<style type="text/css">
+		.ani-slider-transition{
+		  transition: all .5s ease;
+		}
+		.ani-slider-enter {
+		  margin-top: 20px;
+		}
+
+		.ani-slider-leave {
+		  margin-top: -20px;
+		}
+	</style>
+</head>
+<body>
+	<div id="app">
+		<div class="row" style="    height: 20px; background: yellowgreen; overflow: hidden;">
+			<div v-for="item in array" transition="ani-slider">
+				<div>{{item.msg}}</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+	<script type="text/javascript" src="app/js/index3.js"></script>
+</html>
